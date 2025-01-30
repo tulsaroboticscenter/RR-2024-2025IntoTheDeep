@@ -99,7 +99,7 @@ public class RRMechOps{
         setArmAnglePosition(robot.ARM_ANGLE_SCORE_HIGH_BASKET);
         setArmLengthPower(1);
         setArmLengthPosition(robot.ARM_LENGTH_SCORE_HIGH_BASKET);
-        robot.servoTwist.setPosition(robot.INTAKE_TWIST_INIT);
+        robot.servoTwist.setPosition(robot.INTAKE_TWIST_0);
         setServoIntakeAnglePosition(robot.INTAKE_ANGLE_SCORE_SAMPLE);
     }
 
@@ -197,7 +197,7 @@ public class RRMechOps{
         robot.motorLR.setPower(-0.1);
         robot.motorLF.setPower(-0.1);
         robot.motorRF.setPower(-0.1);
-        opMode.sleep(2000);
+        opMode.sleep(1500);
         robot.motorRR.setPower(1);
         robot.motorLR.setPower(1);
         robot.motorLF.setPower(1);

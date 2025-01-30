@@ -34,6 +34,7 @@ public class HWProfile {
     public final double INTAKE_CLAW_CLOSE = 0.95;
     public final double INTAKE_CLAW_CLOSE_TIGHT = 1;
 
+    public final double INTAKE_TWIST_0 = 0.0;
     public final double INTAKE_TWIST_INIT = 0.46;
     public final double INTAKE_TWIST_90 = 0.82;
 
@@ -43,7 +44,7 @@ public class HWProfile {
     public final double INTAKE_ANGLE_GRAB_SAMPLE = 0.85;
     public final double INTAKE_ANGLE_PREP_SCORE_SPECIMEN = 0.55;
     public final double INTAKE_ANGLE_SCORE_SPECIMEN = 0.4;
-    public final double INTAKE_ANGLE_SCORE_SAMPLE = 0.7;
+    public final double INTAKE_ANGLE_SCORE_SAMPLE = 0.6;
 
     // Arm Angle motor constants
     public final int ARM_ANGLE_GRAB_SPECIMEN = -625;
