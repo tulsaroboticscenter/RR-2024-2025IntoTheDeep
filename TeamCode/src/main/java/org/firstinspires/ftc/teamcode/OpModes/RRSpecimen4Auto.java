@@ -115,7 +115,7 @@ public class RRSpecimen4Auto extends LinearOpMode {
         Pose2d midwayPose1 = new Pose2d(20,-8,Math.toRadians(0));
 
         if(opModeIsActive()) mechOps.setScoreSpecimen();
-        safeWaitSeconds(0.8);
+        safeWaitSeconds(0.5);
 
         //Approach submersible to latch the specimen
         Actions.runBlocking(
@@ -127,7 +127,7 @@ public class RRSpecimen4Auto extends LinearOpMode {
         if(opModeIsActive()) mechOps.scoreSpecimen();
         safeWaitSeconds(0.300);
         mechOps.openClaw();
-        safeWaitSeconds(0.2);
+        safeWaitSeconds(0.1);
 
         // back away from the submersible before resetting arms
         Actions.runBlocking(
@@ -164,17 +164,12 @@ public class RRSpecimen4Auto extends LinearOpMode {
         Pose2d coloredSample2 = new Pose2d(55,-50,Math.toRadians(180));
         Pose2d observationZonePosition = new Pose2d(5,-30,Math.toRadians(180));
 
-//        if(opModeIsActive()) mechOps.removeSpecimen();
-
         Actions.runBlocking(
                 thisDrive.actionBuilder(thisDrive.pose)
                         .strafeToLinearHeading(midwayPose1.position, midwayPose1.heading)
                         .strafeToLinearHeading(coloredSample2.position, coloredSample2.heading)
                         .strafeToLinearHeading(observationZonePosition.position, observationZonePosition.heading)
                         .build());
-
- //       if(opModeIsActive()) mechOps.resetArm();
-
     }
 
     public void scoreSpecimen2(MecanumDrive thisDrive) {
