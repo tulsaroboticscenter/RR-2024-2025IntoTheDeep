@@ -100,8 +100,9 @@ public class RRSpecimen4Auto extends LinearOpMode {
 
             scoreSpecimen(drive);
             retrieveColoredSample1(drive);
-            retrieveColoredSample2(drive);
             scoreSpecimen2(drive);
+            retrieveColoredSample2(drive);
+            scoreSpecimen3(drive);
             scoreSpecimen3(drive);
             park(drive);
         }
@@ -115,7 +116,7 @@ public class RRSpecimen4Auto extends LinearOpMode {
         Pose2d midwayPose1 = new Pose2d(20,-8,Math.toRadians(0));
 
         if(opModeIsActive()) mechOps.setScoreSpecimen();
-        safeWaitSeconds(0.5);
+        safeWaitSeconds(0.3);
 
         //Approach submersible to latch the specimen
         Actions.runBlocking(
@@ -204,7 +205,7 @@ public class RRSpecimen4Auto extends LinearOpMode {
 
         // Score the specimen
         if(opModeIsActive()) mechOps.scoreSpecimen();
-        sleep(300);
+        safeWaitSeconds(0.3);
         if(opModeIsActive()) mechOps.openClaw();
         safeWaitSeconds(0.2);
     }
