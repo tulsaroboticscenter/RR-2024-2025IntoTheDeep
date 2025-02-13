@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Libs.DriveMecanumFTCLib;
 import org.firstinspires.ftc.teamcode.Hardware.HWProfile;
+import org.firstinspires.ftc.teamcode.Libs.RRMechOps;
 
 
 /**
@@ -62,10 +63,12 @@ public class __MecanumWheelDrive__ extends LinearOpMode
     public double intakeAngle = robot.INTAKE_ANGLE_GRAB_SPECIMEN;
     public int armAngle = robot.ARM_ANGLE_GRAB_SPECIMEN;
     public int armControl = 0;
+    public RRMechOps mechOps = null;
 
     public void runOpMode()
     {
         robot.init(hardwareMap, true);
+        RRMechOps mechOps = new RRMechOps(robot, opMode);
         telemetry.addData("Status:", "Initialized");
         telemetry.update();
         // Wait for the game to start (driver presses PLAY)
@@ -92,6 +95,7 @@ public class __MecanumWheelDrive__ extends LinearOpMode
         dropTime.reset();
 
         waitForStart();
+        mechOps.tensionRetractionString();
         buttonPressTime.reset();
         aPressTime.reset();
         bPressTime.reset();

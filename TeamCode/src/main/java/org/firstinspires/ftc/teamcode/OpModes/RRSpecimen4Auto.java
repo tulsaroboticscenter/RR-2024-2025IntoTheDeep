@@ -34,14 +34,17 @@ import static com.qualcomm.robotcore.util.ElapsedTime.Resolution.SECONDS;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.onbotjava.handlers.objbuild.WaitForBuild;
 import org.firstinspires.ftc.teamcode.Hardware.HWProfile;
 import org.firstinspires.ftc.teamcode.Libs.RRMechOps;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 
 @Autonomous(name = "RR- 4 Specimen", group = "Competition", preselectTeleOp = "__MecanumWheelDrive__")
+@Disabled
 public class RRSpecimen4Auto extends LinearOpMode {
 
     public static String TEAM_NAME = "Robo Renegades";
@@ -79,6 +82,7 @@ public class RRSpecimen4Auto extends LinearOpMode {
         telemetry.update();
 
         mechOps.tensionRetractionString();
+        mechOps.resetAngleArm();
 
         mechOps.closeClaw();
         mechOps.initArmAngle();
@@ -88,13 +92,13 @@ public class RRSpecimen4Auto extends LinearOpMode {
         robot.servoTwist.setPosition(robot.INTAKE_TWIST_INIT);
 
         // Wait for the DS start button to be touched.
-        while(!opModeIsActive()){
-            telemetry.addData(">", "Touch Play to start OpMode");
-            telemetry.addData("-------------------", "-------------------");
-            telemetry.addData("Retraction Position = ", robot.motorArmLength.getCurrentPosition());
-            telemetry.addData("Arm Angle Encoder Value = ", robot.motorArmAngle.getCurrentPosition());
-            telemetry.update();
-        }
+        telemetry.addData(">", "Touch Play to start OpMode");
+        telemetry.addData("-------------------", "-------------------");
+        telemetry.addData("Retraction Position = ", robot.motorArmLength.getCurrentPosition());
+        telemetry.addData("Arm Angle Encoder Value = ", robot.motorArmAngle.getCurrentPosition());
+        telemetry.update();
+
+        waitForStart();
 
         if (opModeIsActive() && !isStopRequested()) {
 

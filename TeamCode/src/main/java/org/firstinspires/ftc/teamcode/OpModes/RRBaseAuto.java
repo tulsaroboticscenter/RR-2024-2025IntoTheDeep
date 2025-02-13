@@ -42,7 +42,7 @@ import org.firstinspires.ftc.teamcode.MecanumDrive;
 
 import org.firstinspires.ftc.teamcode.Libs.RRMechOps;
 
-@Autonomous(name = "RR Specimen", group = "Competition", preselectTeleOp = "__MecanumWheelDrive__")
+@Autonomous(name = "RR Specimen - STATE", group = "Competition", preselectTeleOp = "__MecanumWheelDrive__")
 public class RRBaseAuto extends LinearOpMode {
 
     public static String TEAM_NAME = "Robo Renegades";
@@ -80,6 +80,7 @@ public class RRBaseAuto extends LinearOpMode {
         telemetry.update();
 
         mechOps.tensionRetractionString();
+        mechOps.resetAngleArm();
 
         mechOps.closeClaw();
         mechOps.initArmAngle();
@@ -89,19 +90,18 @@ public class RRBaseAuto extends LinearOpMode {
         robot.servoTwist.setPosition(robot.INTAKE_TWIST_INIT);
 
         // Wait for the DS start button to be touched.
-        while(!opModeIsActive()){
-            telemetry.addData(">", "Touch Play to start OpMode");
-            telemetry.addData("-------------------", "-------------------");
-            telemetry.addData("Retraction Position = ", robot.motorArmLength.getCurrentPosition());
-            telemetry.addData("Arm Angle Encoder Value = ", robot.motorArmAngle.getCurrentPosition());
-            telemetry.update();
-        }
+        telemetry.addData(">", "Touch Play to start OpMode");
+        telemetry.addData("-------------------", "-------------------");
+        telemetry.addData("Retraction Position = ", robot.motorArmLength.getCurrentPosition());
+        telemetry.addData("Arm Angle Encoder Value = ", robot.motorArmAngle.getCurrentPosition());
+        telemetry.update();
+
+        waitForStart();
 
         if (opModeIsActive() && !isStopRequested()) {
 
-            scoreSpecimen(drive);
+            scoreSpecimen1(drive);
             retrieveColoredSample1(drive);
-//            retrieveColoredSample2(drive);
             scoreSpecimen2(drive);
             scoreSpecimen3(drive);
             park(drive);
@@ -111,7 +111,7 @@ public class RRBaseAuto extends LinearOpMode {
 
     }   // end runOpMode()
 
-    public void scoreSpecimen(MecanumDrive thisDrive) {
+    public void scoreSpecimen1(MecanumDrive thisDrive) {
         Pose2d specimenScoringPrepPosition = new Pose2d(34,8,0);
         Pose2d midwayPose1 = new Pose2d(20,-8,Math.toRadians(0));
 
@@ -127,13 +127,14 @@ public class RRBaseAuto extends LinearOpMode {
         // Engage the specimen with the submersible
         if(opModeIsActive()) mechOps.scoreSpecimen();
         safeWaitSeconds(0.300);
-        mechOps.openClaw();
+        if(opModeIsActive()) mechOps.openClaw();
         safeWaitSeconds(0.2);
 
         // back away from the submersible before resetting arms
         Actions.runBlocking(
                 thisDrive.actionBuilder(thisDrive.pose)
                         .strafeToLinearHeading(midwayPose1.position, midwayPose1.heading)
+                        .turnTo(midwayPose1.heading)
                         .build());
 
         if(opModeIsActive()) mechOps.setGrabSpecimen();
@@ -141,11 +142,11 @@ public class RRBaseAuto extends LinearOpMode {
     }
 
     public void retrieveColoredSample1(MecanumDrive thisDrive) {
-        Pose2d midwayPose1 = new Pose2d(20,-29,Math.toRadians(180));
+        Pose2d midwayPose1 = new Pose2d(10,-25,Math.toRadians(180));
         Pose2d midwayPose1a = new Pose2d(24,-31,Math.toRadians(180));
         Pose2d midwayPose2 = new Pose2d(55,-31,Math.toRadians(180));
         Pose2d coloredSample1 = new Pose2d(55,-40,Math.toRadians(180));
-        Pose2d observationZonePosition = new Pose2d(7,-33,Math.toRadians(180));
+        Pose2d observationZonePosition = new Pose2d(5,-33,Math.toRadians(180));
 
         if(opModeIsActive()) mechOps.setGrabSpecimen();
         if(opModeIsActive()) mechOps.openClaw();
@@ -153,6 +154,7 @@ public class RRBaseAuto extends LinearOpMode {
         Actions.runBlocking(
                 thisDrive.actionBuilder(thisDrive.pose)
                         .strafeToLinearHeading(midwayPose1.position, midwayPose1.heading)
+                        .turnTo(midwayPose1a.heading)
                         .strafeToLinearHeading(midwayPose1a.position, midwayPose1a.heading)
                         .strafeToLinearHeading(midwayPose2.position, midwayPose2.heading)
                         .strafeToLinearHeading(coloredSample1.position, coloredSample1.heading)
@@ -171,26 +173,21 @@ public class RRBaseAuto extends LinearOpMode {
                 thisDrive.actionBuilder(thisDrive.pose)
                         .strafeToLinearHeading(midwayPose1.position, midwayPose1.heading)
                         .strafeToLinearHeading(coloredSample2.position, coloredSample2.heading)
+                        .turnTo(observationZonePosition.heading)
                         .strafeToLinearHeading(observationZonePosition.position, observationZonePosition.heading)
                         .build());
 
  //       if(opModeIsActive()) mechOps.resetArm();
-
     }
 
     public void scoreSpecimen2(MecanumDrive thisDrive) {
         Pose2d specimenPickupPosition = new Pose2d(4,-33,Math.toRadians(180));
         Pose2d midwayPose1 = new Pose2d(20,10,Math.toRadians(0));
-        Pose2d specimenScoringPrepPosition = new Pose2d(34,8,Math.toRadians(0));
+        Pose2d midwayPose1a = new Pose2d(25,11,Math.toRadians(0));
+        Pose2d specimenScoringPrepPosition = new Pose2d(34,12,Math.toRadians(0));
+        Pose2d midwayPose2 = new Pose2d(10,0,Math.toRadians(180));
 
-        if(opModeIsActive()) mechOps.setGrabSpecimen();
-        if(opModeIsActive()) mechOps.openClaw();
 
-        // drive to the specimen pickup position
-//        Actions.runBlocking(      
-//                thisDrive.actionBuilder(thisDrive.pose)
-//                        .strafeToLinearHeading(specimenPickupPosition.position, specimenPickupPosition.heading)
-//                        .build());
         // grab the specimen and remove it from the wall
         if(opModeIsActive()) mechOps.closeClaw();
         safeWaitSeconds(0.3);
@@ -200,23 +197,27 @@ public class RRBaseAuto extends LinearOpMode {
         Actions.runBlocking(
                 thisDrive.actionBuilder(thisDrive.pose)
                         .strafeToLinearHeading(midwayPose1.position, midwayPose1.heading)
-                        .build());
-
-        // Move into specimen scoring position
-        Actions.runBlocking(
-                thisDrive.actionBuilder(thisDrive.pose)
+//                        .turnTo(midwayPose1a.heading)
+                        .strafeToLinearHeading(midwayPose1a.position, midwayPose1a.heading)
+//                        .turnTo(midwayPose1a.heading)
                         .strafeToLinearHeading(specimenScoringPrepPosition.position, specimenScoringPrepPosition.heading)
                         .build());
 
         // Score the specimen
         if(opModeIsActive()) mechOps.scoreSpecimen();
-        sleep(300);
+        safeWaitSeconds(0.300);
         if(opModeIsActive()) mechOps.openClaw();
         safeWaitSeconds(0.2);
+
+        Actions.runBlocking(
+                thisDrive.actionBuilder(thisDrive.pose)
+                        .strafeToLinearHeading(midwayPose2.position, midwayPose2.heading)
+                        .build());
+
     }
 
     public void scoreSpecimen3(MecanumDrive thisDrive) {
-        Pose2d specimenPickupPosition = new Pose2d(4,-35,Math.toRadians(180));
+        Pose2d specimenPickupPosition = new Pose2d(5,-35,Math.toRadians(180));
         Pose2d midwayPose1 = new Pose2d(20,0,Math.toRadians(180));
         Pose2d midwayPose2 = new Pose2d(18,-35,Math.toRadians(180));
         Pose2d midwayPose3 = new Pose2d(26,10,Math.toRadians(0));
@@ -229,8 +230,9 @@ public class RRBaseAuto extends LinearOpMode {
         // Drive to the specimen pickup position
         Actions.runBlocking(
                 thisDrive.actionBuilder(thisDrive.pose)
-                        .strafeToLinearHeading(midwayPose1.position, midwayPose1.heading)
+//                        .strafeToLinearHeading(midwayPose1.position, midwayPose1.heading)
                         .strafeToLinearHeading(midwayPose2.position, midwayPose2.heading)
+                        .turnTo(midwayPose2.heading)
                         .strafeToLinearHeading(specimenPickupPosition.position, specimenPickupPosition.heading)
                         .build());
 

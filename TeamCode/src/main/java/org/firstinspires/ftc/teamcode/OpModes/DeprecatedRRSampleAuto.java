@@ -44,7 +44,7 @@ import org.firstinspires.ftc.teamcode.MecanumDrive;
 
 @Autonomous(name = "RR Sample", group = "Competition", preselectTeleOp = "__MecanumWheelDrive__")
 @Disabled
-public class RRSampleAuto extends LinearOpMode {
+public class DeprecatedRRSampleAuto extends LinearOpMode {
 
     public static String TEAM_NAME = "Robo Renegades";
     public static int TEAM_NUMBER = 18802;
@@ -81,6 +81,7 @@ public class RRSampleAuto extends LinearOpMode {
         telemetry.update();
 
         mechOps.tensionRetractionString();
+        mechOps.resetAngleArm();
 
         mechOps.closeClaw();
 //        mechOps.initArmAngle();

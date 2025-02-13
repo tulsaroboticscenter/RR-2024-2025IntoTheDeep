@@ -116,7 +116,7 @@ public class RRMechOps{
         setArmLengthPower(1);
         setArmLengthPosition(robot.ARM_LENGTH_AUTO_GRAB_SAMPLE);
         setArmAnglePower(1);
-        setArmAnglePosition(robot.ARM_ANGLE_AUTOS_PREP_GRAB_SAMPLE2);
+        setArmAnglePosition(robot.ARM_ANGLE_AUTO_PREP_GRAB_SAMPLE2);
         robot.servoTwist.setPosition(robot.INTAKE_TWIST_INIT);
         setServoIntakeAnglePosition(robot.INTAKE_ANGLE_GRAB_SAMPLE);
     }
@@ -239,9 +239,9 @@ public class RRMechOps{
         setArmLengthPower(1);
         setArmAnglePosition(0);
         while(notRetracted){
-            this.armLengthPosition = this.armLengthPosition-1;
+            this.armLengthPosition = this.armLengthPosition-25;
             robot.motorArmLength.setTargetPosition(this.armLengthPosition);
-            if(robot.motorArmLength.getCurrent(CurrentUnit.AMPS) > 1){
+            if(robot.motorArmLength.getCurrent(CurrentUnit.AMPS) > 2){
                 notRetracted = false;
                 robot.motorArmLength.setPower(0);
                 robot.motorArmLength.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -257,6 +257,34 @@ public class RRMechOps{
             opMode.telemetry.addData("Target Position = ", this.armLengthPosition);
             opMode.telemetry.addData("motorArmLength Position = ", robot.motorArmLength.getCurrentPosition());
             opMode.telemetry.addData("motorArmLength Current Draw = ", robot.motorArmLength.getCurrent(CurrentUnit.AMPS));
+
+            opMode.telemetry.update();
+        }
+    }
+
+    public void resetAngleArm(){
+        boolean notReset = true;
+
+        setArmAnglePower(1);
+        while(notReset){
+            this.armAnglePosition = this.armAnglePosition+10;
+            robot.motorArmAngle.setTargetPosition(this.armAnglePosition);
+            if(robot.motorArmAngle.getCurrent(CurrentUnit.AMPS) > 3){
+                notReset = false;
+                robot.motorArmAngle.setPower(0);
+                robot.motorArmAngle.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                robot.motorArmAngle.setTargetPosition(0);
+                robot.motorArmAngle.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+                robot.motorArmAngle.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            }
+            opMode.telemetry.addData(">", "#####################################<");
+            opMode.telemetry.addData(">", "                                     <");
+            opMode.telemetry.addData(">", "PREPARING ANGLE MOTOR - DO NOT START <");
+            opMode.telemetry.addData(">", "                                     <");
+            opMode.telemetry.addData(">", "#####################################<");
+            opMode.telemetry.addData("Target Position = ", this.armAnglePosition);
+            opMode.telemetry.addData("motorArmLength Position = ", robot.motorArmAngle.getCurrentPosition());
+            opMode.telemetry.addData("motorArmLength Current Draw = ", robot.motorArmAngle.getCurrent(CurrentUnit.AMPS));
 
             opMode.telemetry.update();
         }

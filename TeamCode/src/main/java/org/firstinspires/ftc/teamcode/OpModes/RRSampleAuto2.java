@@ -41,7 +41,7 @@ import org.firstinspires.ftc.teamcode.Hardware.HWProfile;
 import org.firstinspires.ftc.teamcode.Libs.RRMechOps;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 
-@Autonomous(name = "RR Sample 2", group = "Competition", preselectTeleOp = "__MecanumWheelDrive__")
+@Autonomous(name = "RR Sample - STATE", group = "Competition", preselectTeleOp = "__MecanumWheelDrive__")
 public class RRSampleAuto2 extends LinearOpMode {
 
     public static String TEAM_NAME = "Robo Renegades";
@@ -79,6 +79,7 @@ public class RRSampleAuto2 extends LinearOpMode {
         telemetry.update();
 
         mechOps.tensionRetractionString();
+        mechOps.resetAngleArm();
 
         mechOps.closeClaw();
 //        mechOps.initArmAngle();
@@ -88,13 +89,12 @@ public class RRSampleAuto2 extends LinearOpMode {
         robot.servoTwist.setPosition(robot.INTAKE_TWIST_INIT);
 
         // Wait for the DS start button to be touched.
-        while(!opModeIsActive()){
-            telemetry.addData(">", "Touch Play to start OpMode");
-            telemetry.addData("-------------------", "-------------------");
-            telemetry.addData("Retraction Position = ", robot.motorArmLength.getCurrentPosition());
-            telemetry.addData("Arm Angle Encoder Value = ", robot.motorArmAngle.getCurrentPosition());
-            telemetry.update();
-        }
+        telemetry.addData(">", "Touch Play to start OpMode");
+        telemetry.addData("-------------------", "-------------------");
+        telemetry.addData("Retraction Position = ", robot.motorArmLength.getCurrentPosition());
+        telemetry.addData("Arm Angle Encoder Value = ", robot.motorArmAngle.getCurrentPosition());
+        telemetry.update();
+        waitForStart();
 
         if (opModeIsActive() && !isStopRequested()) {
 
@@ -118,15 +118,10 @@ public class RRSampleAuto2 extends LinearOpMode {
         if(opModeIsActive()) mechOps.prepScoreSampleHigh();
         safeWaitSeconds(0.4);
 
-        Actions.runBlocking(
-                thisDrive.actionBuilder(thisDrive.pose)
-                        .strafeToLinearHeading(midwayPose1a.position, midwayPose1a.heading)
-                        .build());
-
-
         //Approach submersible to latch the specimen
         Actions.runBlocking(
                 thisDrive.actionBuilder(thisDrive.pose)
+                        .strafeToLinearHeading(midwayPose1a.position, midwayPose1a.heading)
                         .strafeToLinearHeading(sampleScoringPrepPosition.position, sampleScoringPrepPosition.heading)
                         .build());
 
@@ -149,8 +144,8 @@ public class RRSampleAuto2 extends LinearOpMode {
 
     public void scoreSample2(MecanumDrive thisDrive) {
         // make sure the bot has a good grip on the pixels
-        Pose2d sampleScoringPrepPosition = new Pose2d(14,21,Math.toRadians(120));
-        Pose2d midwayPose1 = new Pose2d(22,1,Math.toRadians(0));
+        Pose2d sampleScoringPrepPosition = new Pose2d(10,23,Math.toRadians(120));
+        Pose2d midwayPose1 = new Pose2d(22,3,Math.toRadians(0));
         Pose2d midwayPose1a = new Pose2d(12,9,Math.toRadians(0));
 
         if(opModeIsActive()) mechOps.autoPrepGrabSample();
@@ -192,8 +187,8 @@ public class RRSampleAuto2 extends LinearOpMode {
 
     public void scoreSample3(MecanumDrive thisDrive) {
         // make sure the bot has a good grip on the pixels
-        Pose2d sampleScoringPrepPosition = new Pose2d(14,21,Math.toRadians(130));
-        Pose2d midwayPose1 = new Pose2d(21,15.5,Math.toRadians(0));
+        Pose2d sampleScoringPrepPosition = new Pose2d(12,23,Math.toRadians(130));
+        Pose2d midwayPose1 = new Pose2d(21,16,Math.toRadians(0));
         Pose2d midwayPose1a = new Pose2d(10,9,Math.toRadians(0));
 
         if(opModeIsActive()) mechOps.autoPrepGrabSample();
@@ -237,8 +232,8 @@ public class RRSampleAuto2 extends LinearOpMode {
 
     public void scoreSample4(MecanumDrive thisDrive) {
         // make sure the bot has a good grip on the pixels
-        Pose2d sampleScoringPrepPosition = new Pose2d(14,18,Math.toRadians(125));
-        Pose2d midwayPose1 = new Pose2d(25,16.5,Math.toRadians(25));
+        Pose2d sampleScoringPrepPosition = new Pose2d(12,20,Math.toRadians(125));
+        Pose2d midwayPose1 = new Pose2d(27,16.5,Math.toRadians(25));
         Pose2d midwayPose1a = new Pose2d(20,9,Math.toRadians(0));
 
         //Prepare to grab the sample
