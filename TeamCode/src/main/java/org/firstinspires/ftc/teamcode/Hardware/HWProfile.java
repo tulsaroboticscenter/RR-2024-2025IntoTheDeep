@@ -47,8 +47,8 @@ public class HWProfile {
     public final double INTAKE_ANGLE_SCORE_SAMPLE = 0.6;
 
     // Arm Angle motor constants
-    public final int ARM_ANGLE_GRAB_SPECIMEN = -700;
-    public final int ARM_ANGLE_PREP_SCORE_SPECIMEN = -1660;
+    public final int ARM_ANGLE_GRAB_SPECIMEN = -575;
+    public final int ARM_ANGLE_PREP_SCORE_SPECIMEN = -1575;
     public final int ARM_ANGLE_SCORE_SPECIMEN = -1300;
     public final int ARM_ANGLE_REMOVE_SPECIMEN = -800;
     public final int ARM_ANGLE_SCORE_HIGH_BASKET = -2550;
